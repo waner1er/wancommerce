@@ -27,7 +27,7 @@ class CartComponent extends Component
         $this->dispatch('cart-updated');
     }
 
-    public function createOrder()
+    public function proceedToCheckout()
     {
         // Vérifier l'authentification
         if (!Auth::check()) {
@@ -35,20 +35,15 @@ class CartComponent extends Component
             return redirect()->route('login');
         }
 
-        try {
-            $order = $this->cartService->createOrder();
-            session()->flash('success', 'Commande créée avec succès ! Numéro: ' . $order->order_number);
-            $this->dispatch('cart-updated');
+        $cart = $this->cartService->getCart();
 
-            // Utiliser redirect après la création de la commande
-            return $this->redirect(route('orders'), navigate: true);
-        } catch (\Exception $e) {
-            session()->flash('error', 'Erreur lors de la création de la commande: ' . $e->getMessage());
-            \Log::error('Erreur création commande', [
-                'error' => $e->getMessage(),
-                'trace' => $e->getTraceAsString()
-            ]);
+        if (!$cart || $cart->items->isEmpty()) {
+            session()->flash('error', 'Votre panier est vide.');
+            return;
         }
+
+        // Rediriger vers l'étape de livraison
+        return $this->redirect('/checkout/shipping', navigate: true);
     }
 
     public function render()

@@ -13,10 +13,27 @@ return new class extends Migration
     {
         Schema::create('users', function (Blueprint $table) {
             $table->id();
-            $table->string('name');
+            $table->string('first_name')->nullable();
+            $table->string('last_name')->nullable();
             $table->string('email')->unique();
             $table->timestamp('email_verified_at')->nullable();
             $table->string('password');
+
+            // Contact information
+            $table->string('phone')->nullable();
+
+            // Billing address
+            $table->string('address')->nullable();
+            $table->string('city')->nullable();
+            $table->string('postal_code')->nullable();
+            $table->string('country')->nullable();
+
+            // Shipping address (optional, different from billing)
+            $table->string('shipping_address')->nullable();
+            $table->string('shipping_city')->nullable();
+            $table->string('shipping_postal_code')->nullable();
+            $table->string('shipping_country')->nullable();
+
             $table->rememberToken();
             $table->timestamps();
         });

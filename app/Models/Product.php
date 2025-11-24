@@ -19,6 +19,11 @@ class Product extends Model
         'category_id',
         'slug',
         'image',
+        'weight',
+    ];
+
+    protected $casts = [
+        'weight' => 'decimal:3',
     ];
 
     public function category(): BelongsTo

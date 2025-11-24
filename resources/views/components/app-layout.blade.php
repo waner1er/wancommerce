@@ -52,5 +52,7 @@
 <main class="container w-full mx-auto px-6 lg:px-8 py-6">
     {{ $slot }}
 </main>
+
+@stack('scripts')
 </body>
 </html>

@@ -75,12 +75,12 @@
 
                     @auth
                         <button
-                            wire:click="createOrder"
+                            wire:click="proceedToCheckout"
                             wire:loading.attr="disabled"
                             wire:loading.class="opacity-50 cursor-not-allowed"
-                            class="px-6 py-3 bg-green-600 text-white rounded hover:bg-green-700 transition-opacity">
-                            <span wire:loading.remove wire:target="createOrder">Valider la commande</span>
-                            <span wire:loading wire:target="createOrder">Traitement en cours...</span>
+                            class="px-6 py-3 bg-green-600 text-white rounded hover:bg-green-700 transition-opacity cursor-pointer">
+                            <span wire:loading.remove wire:target="proceedToCheckout">Valider la commande</span>
+                            <span wire:loading wire:target="proceedToCheckout">Traitement en cours...</span>
                         </button>
                     @else
                         <a href="/login" class="px-6 py-3 bg-blue-600 text-white rounded hover:bg-blue-700">

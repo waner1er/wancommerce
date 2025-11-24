@@ -8,6 +8,57 @@ use Illuminate\Database\Seeder;
 
 class ProductSeeder extends Seeder
 {
+    /**
+     * Estimate product weight based on category and price
+     */
+    private function estimateWeight(string $categoryName, float $price): float
+    {
+        // Poids estimés en kg selon les catégories
+        $weightEstimates = [
+            // Informatique
+            'PC Portables' => [1.5, 2.5],
+            'PC Fixes' => [8.0, 15.0],
+            'Composants PC' => [0.2, 1.5],
+            'Smartphones' => [0.15, 0.25],
+            'Téléphones Classiques' => [0.08, 0.12],
+            'Accessoires' => [0.05, 0.5],
+
+            // Vêtements Homme
+            'T-shirts & Polos' => [0.15, 0.3],
+            'Pantalons & Jeans' => [0.4, 0.7],
+            'Vestes & Manteaux' => [0.8, 2.0],
+
+            // Vêtements Femme
+            'Robes' => [0.2, 0.5],
+            'Hauts & Chemisiers' => [0.1, 0.3],
+            'Pantalons & Jupes' => [0.3, 0.6],
+            'Enfants' => [0.15, 0.4],
+
+            // Meubles
+            'Salon' => [15.0, 80.0],
+            'Chambre' => [20.0, 100.0],
+            'Bureau' => [10.0, 50.0],
+
+            // Décoration
+            'Cadres & Tableaux' => [0.5, 3.0],
+            'Luminaires' => [0.5, 5.0],
+
+            // Sport
+            'Musculation' => [1.0, 25.0],
+            'Cardio' => [5.0, 80.0],
+            'Randonnée' => [0.5, 3.0],
+            'Camping' => [1.0, 8.0],
+        ];
+
+        $range = $weightEstimates[$categoryName] ?? [0.5, 2.0];
+
+        // Ajouter une variation aléatoire dans la fourchette
+        $min = $range[0];
+        $max = $range[1];
+        $weight = $min + (mt_rand() / mt_getrandmax()) * ($max - $min);
+
+        return round($weight, 3);
+    }
 
     public function run(): void
     {
@@ -193,6 +244,7 @@ class ProductSeeder extends Seeder
                         'price' => $productData['price'] / 100, // Prix en euros (était en centimes)
                         'stock' => rand(5, 50),
                         'category_id' => $category->id,
+                        'weight' => $this->estimateWeight($categoryName, $productData['price'] / 100),
                     ]);
                 }
             }
